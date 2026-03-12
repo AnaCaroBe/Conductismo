@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartilla Digital — Conductismo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink:#1a1208; --paper:#f5f0e8; --cream:#ede8da;
+  --amber:#c9871c; --amber-deep:#8b5e0a;
+  --teal:#1a6b6b; --teal-light:#2d9e9e;
+  --rust:#9b3a1a; --sage:#5a7a52;
+  --lavender:#6b5b8a; --slate:#3a4a5c;
+  --gold:#e8c547; --muted:#7a6e5e; --border:#d4c9b0;
+  --font-display:'Playfair Display',serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --gap:6rem;
+}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.7;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+#pb{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--amber),var(--teal-light),var(--rust));width:0%;z-index:999;transition:width .1s}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(245,240,232,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;height:52px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--font-display);font-size:.95rem;font-weight:700;color:var(--amber-deep);letter-spacing:.05em;text-transform:uppercase}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{font-size:.72rem;font-weight:500;color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;transition:color .2s}
+.nav-links a:hover{color:var(--amber)}
+/* COVER */
+#cover{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.cover-left{background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:7rem 4rem 4rem;position:relative;overflow:hidden}
+.cover-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(201,135,28,.18) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(26,107,107,.15) 0%,transparent 50%)}
+.cover-tag{font-family:var(--font-mono);font-size:.7rem;color:var(--amber);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .2s forwards}
+.cover-title{font-family:var(--font-display);font-size:clamp(3.5rem,7vw,6rem);font-weight:900;color:var(--paper);line-height:1;letter-spacing:-.02em;margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .4s forwards}
+.cover-title em{color:var(--amber);font-style:italic}
+.cover-desc{font-size:.95rem;color:rgba(245,240,232,.65);max-width:400px;line-height:1.8;opacity:0;animation:fadeUp .8s .6s forwards}
+.cover-right{background:var(--cream);display:flex;flex-direction:column;justify-content:flex-end;padding:7rem 3rem 3rem;position:relative;overflow:hidden}
+.cover-right::before{content:'C';position:absolute;top:-.1em;right:-.05em;font-family:var(--font-display);font-size:40vw;font-weight:900;color:var(--border);line-height:1;opacity:.4;pointer-events:none}
+.cover-index{position:relative;z-index:1}
+.ci-title{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:1.2rem}
+.ci-item{display:flex;align-items:baseline;gap:1rem;padding:.6rem 0;border-top:1px solid var(--border);text-decoration:none;color:inherit;transition:all .2s}
+.ci-item:hover{padding-left:.5rem}
+.ci-item:hover .ci-label{color:var(--amber)}
+.ci-num{font-family:var(--font-mono);font-size:.68rem;color:var(--amber);min-width:1.8rem}
+.ci-label{font-family:var(--font-display);font-size:1.05rem;font-weight:700;transition:color .2s}
+.ci-dot{flex:1;height:1px;background:var(--border);margin:0 .5rem}
+/* SECTION */
+.sec{max-width:1100px;margin:0 auto;padding:var(--gap) 2rem}
+.eyebrow{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.ey-num{font-family:var(--font-mono);font-size:.7rem;color:var(--amber);letter-spacing:.15em}
+.ey-rule{flex:1;height:1px;background:var(--border);max-width:60px}
+.ey-tag{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.sec-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.2rem);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:.5rem}
+.sec-sub{font-size:.95rem;color:var(--muted);font-style:italic;margin-bottom:2.5rem}
+/* INTRO */
+.intro-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:4rem;align-items:start}
+.intro-lead{font-family:var(--font-display);font-size:1.35rem;line-height:1.6;margin-bottom:1.5rem;font-weight:400;font-style:italic}
+.intro-body p{margin-bottom:1.2rem;font-size:.96rem;color:#3a3020}
+.intro-aside{display:flex;flex-direction:column;gap:1.5rem}
+.fact-card{background:var(--ink);color:var(--paper);padding:1.8rem;position:relative;overflow:hidden}
+.fact-card::after{content:'';position:absolute;bottom:0;right:0;width:60px;height:60px;background:var(--amber);clip-path:polygon(100% 0,100% 100%,0 100%)}
+.fn{font-family:var(--font-display);font-size:3rem;font-weight:900;color:var(--amber);line-height:1;margin-bottom:.3rem}
+.fl{font-size:.82rem;color:rgba(245,240,232,.7);text-transform:uppercase;letter-spacing:.08em}
+.pillar-strip{display:flex;margin-top:2.5rem}
+.pillar{flex:1;padding:1.5rem 1.2rem}
+.pillar:nth-child(1){background:var(--teal);color:white}
+.pillar:nth-child(2){background:var(--amber);color:var(--ink)}
+.pillar:nth-child(3){background:var(--rust);color:white}
+.pillar:nth-child(4){background:var(--slate);color:white}
+.pi{font-size:1.8rem;margin-bottom:.5rem;display:block}
+.pn{font-family:var(--font-display);font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.pd{font-size:.75rem;opacity:.85;line-height:1.5}
+/* OBJETO */
+#objeto{background:var(--ink);color:var(--paper);padding:6rem 0}
+.er-diagram{display:flex;align-items:center;justify-content:center;gap:0;margin:2.5rem 0;flex-wrap:wrap}
+.er-box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:1.8rem 2rem;text-align:center;min-width:160px;transition:all .3s}
+.er-box:hover{background:rgba(255,255,255,.12);transform:translateY(-4px)}
+.er-box .erl{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;opacity:.5;margin-bottom:.4rem}
+.er-box .erm{font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:.4rem}
+.er-box.eb{border-color:var(--teal-light)}.er-box.eb .erm{color:var(--teal-light)}
+.er-box.rb{border-color:var(--amber)}.er-box.rb .erm{color:var(--amber)}
+.er-arrow{font-size:1.8rem;color:var(--amber);padding:0 .5rem}
+.erd{font-size:.78rem;opacity:.55;line-height:1.4}
+.ctable{width:100%;border-collapse:collapse;margin-top:2rem}
+.ctable th{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);padding:.8rem 1.2rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.1)}
+.ctable td{padding:1rem 1.2rem;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top}
+.ctable tr:hover td{background:rgba(255,255,255,.03)}
+.ct{font-family:var(--font-display);font-weight:700;color:var(--teal-light);font-size:1rem}
+/* REFLEXION */
+#reflexion{background:var(--cream)}
+.timeline{position:relative;padding-left:3rem;margin:2rem 0}
+.timeline::before{content:'';position:absolute;left:.85rem;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--amber),var(--teal),var(--rust),var(--lavender))}
+.tl-item{position:relative;margin-bottom:2.5rem;opacity:0;transform:translateX(-20px);transition:all .5s}
+.tl-item.visible{opacity:1;transform:translateX(0)}
+.tl-dot{position:absolute;left:-2.45rem;top:.3rem;width:14px;height:14px;border-radius:50%;border:2px solid var(--paper)}
+.tl-year{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--amber-deep);margin-bottom:.3rem}
+.tl-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+.tl-body{font-size:.88rem;color:var(--muted);line-height:1.65}
+.phases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.phase-card{border-top:4px solid;padding:2rem 1.5rem;background:white;box-shadow:0 2px 20px rgba(0,0,0,.05);transition:transform .3s,box-shadow .3s}
+.phase-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.phase-card:nth-child(1){border-color:var(--amber)}.phase-card:nth-child(1) .ph-name{color:var(--amber-deep)}
+.phase-card:nth-child(2){border-color:var(--teal)}.phase-card:nth-child(2) .ph-name{color:var(--teal)}
+.phase-card:nth-child(3){border-color:var(--rust)}.phase-card:nth-child(3) .ph-name{color:var(--rust)}
+.ph-period{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;color:var(--muted);margin-bottom:.5rem}
+.ph-name{font-family:var(--font-display);font-size:1.3rem;font-weight:900;margin-bottom:1rem;line-height:1.2}
+.ph-desc{font-size:.88rem;line-height:1.7;color:#4a4030}
+.ph-chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:1rem}
+.chip{font-family:var(--font-mono);font-size:.62rem;padding:.2rem .5rem;background:var(--cream);border:1px solid var(--border);color:var(--muted)}
+/* AUTHORS */
+#autores{background:var(--paper)}
+.authors-pair{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.authors-pair:last-of-type{border-bottom:none}
+.avc{background:white;box-shadow:0 4px 24px rgba(0,0,0,.07);overflow:hidden;opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s;display:flex;flex-direction:column}
+.avc.visible{opacity:1;transform:translateY(0)}
+.aph{position:relative;height:230px;overflow:hidden;flex-shrink:0}
+.aph img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%);transition:filter .4s,transform .5s}
+.avc:hover .aph img{filter:grayscale(0%);transform:scale(1.04)}
+.aph::after{content:'';position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(transparent,rgba(0,0,0,.6));pointer-events:none}
+.aph-badge{position:absolute;bottom:.8rem;left:1rem;right:1rem;display:flex;align-items:flex-end;justify-content:space-between;z-index:2}
+.aph-name{font-family:var(--font-display);font-size:1.05rem;font-weight:900;color:white;line-height:1.2}
+.aph-num{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;color:rgba(255,255,255,.7);background:rgba(0,0,0,.35);padding:.2rem .4rem}
+.abar{height:5px;width:100%;flex-shrink:0}
+.avb{padding:1.4rem 1.5rem 1.5rem;flex:1;display:flex;flex-direction:column}
+.ameta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;flex-wrap:wrap;gap:.3rem}
+.adates{font-family:var(--font-mono);font-size:.68rem;color:var(--muted);letter-spacing:.06em}
+.atheory{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid;border-radius:2px}
+.aintro{font-family:var(--font-display);font-style:italic;font-size:.92rem;line-height:1.55;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);color:#3a3020}
+.apt{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.apl{list-style:none;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.apl li{display:flex;gap:.6rem;font-size:.83rem;line-height:1.55;align-items:flex-start}
+.adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:.45rem}
+.acont{margin-top:1rem;padding:.9rem 1rem;border-left:3px solid;background:var(--cream)}
+.acl{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.25rem;opacity:.6}
+.act{font-size:.82rem;line-height:1.55;font-style:italic}
+/* PLACEHOLDER photo */
+.aph-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.aph-placeholder span{font-family:var(--font-display);font-size:5rem;font-weight:900;color:rgba(255,255,255,.2)}
+/* CASO */
+#caso{background:var(--ink);color:var(--paper);padding:6rem 0}
+.caso-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:2.5rem;overflow:hidden}
+.caso-left{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:2.5rem}
+.caso-right{background:var(--amber);padding:2.5rem;color:var(--ink)}
+.caso-label{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;opacity:.6;margin-bottom:.8rem}
+.caso-stitle{font-family:var(--font-display);font-size:1.5rem;font-weight:900;margin-bottom:1rem;line-height:1.2}
+.cstep{display:flex;gap:1rem;margin-bottom:1.2rem;align-items:flex-start}
+.cstep-n{width:28px;height:28px;border-radius:50%;background:var(--teal);color:white;font-family:var(--font-mono);font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem}
+.cstep-t{font-size:.9rem;line-height:1.65}
+.cstep-t strong{display:block;margin-bottom:.15rem}
+.ctheory{background:rgba(255,255,255,.08);border-left:3px solid var(--teal-light);padding:1rem 1.2rem;margin-top:1.5rem}
+.cresult{margin-bottom:1.5rem}
+.cri{font-size:2.5rem;margin-bottom:.8rem;display:block}
+.crt{font-family:var(--font-display);font-size:1.2rem;font-weight:900;margin-bottom:.4rem}
+.crtext{font-size:.88rem;line-height:1.65;color:rgba(26,18,8,.8)}
+.cdiag{background:rgba(26,18,8,.12);padding:1.2rem;margin-top:1.5rem;font-family:var(--font-mono);font-size:.82rem}
+.cdr{display:flex;align-items:center;gap:.6rem;padding:.4rem 0}
+.cdrl{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;opacity:.6;min-width:50px}
+/* CONCLUSIONES */
+#conclusiones{background:var(--cream)}
+.concl-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-top:2rem}
+.concl-card{background:white;padding:2.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden;opacity:0;transform:translateY(24px);transition:all .6s}
+.concl-card.visible{opacity:1;transform:translateY(0)}
+.concl-card::before{content:attr(data-num);position:absolute;top:-.1em;right:.1em;font-family:var(--font-display);font-size:8rem;font-weight:900;line-height:1;opacity:.05;pointer-events:none}
+.cn{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;color:var(--amber);margin-bottom:.8rem}
+.ct2{font-family:var(--font-display);font-size:1.35rem;font-weight:900;line-height:1.25;margin-bottom:1rem}
+.ctext{font-size:.91rem;line-height:1.8;color:#3a3020}
+.ctext p{margin-bottom:.8rem}
+.ctext p:last-child{margin-bottom:0}
+.chl{display:flex;gap:1rem;align-items:flex-start;background:var(--cream);padding:1rem;margin-top:1.2rem;border-left:3px solid var(--amber)}
+.chli{font-size:1.4rem;flex-shrink:0;margin-top:.1rem}
+.chlt{font-size:.85rem;line-height:1.6;font-style:italic;color:var(--muted)}
+/* QUOTE */
+.pull-quote{font-family:var(--font-display);font-size:clamp(1.3rem,2.5vw,1.9rem);font-style:italic;line-height:1.4;color:var(--ink);padding:2.5rem 3rem;border-left:5px solid var(--amber);background:rgba(201,135,28,.06);margin:3rem 0;position:relative}
+.pull-quote::before{content:'\201C';font-size:6rem;color:var(--amber);opacity:.25;position:absolute;top:-.2em;left:.2em;line-height:1;font-style:normal}
+.pull-quote cite{display:block;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;color:var(--muted);font-style:normal;margin-top:1rem}
+footer{background:var(--ink);color:var(--paper);padding:3rem 2rem;text-align:center}
+footer .ft{font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--amber);margin-bottom:.5rem}
+footer p{font-size:.82rem;color:rgba(245,240,232,.45);margin:.2rem 0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){
+  #cover{grid-template-columns:1fr}
+  .cover-left{padding:6rem 2rem 3rem}
+  .cover-right{padding:2rem}
+  .intro-grid,.phases-grid,.authors-pair,.caso-grid,.concl-grid{grid-template-columns:1fr}
+  nav .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+<div id="pb"></div>
+<nav>
+  <div class="nav-logo">Conductismo</div>
+  <ul class="nav-links">
+    <li><a href="#intro">Introducción</a></li>
+    <li><a href="#objeto">Objeto</a></li>
+    <li><a href="#reflexion">Reflexión</a></li>
+    <li><a href="#autores">Autores</a></li>
+    <li><a href="#caso">Caso Real</a></li>
+    <li><a href="#conclusiones">Conclusiones</a></li>
+    <li><a href="#referencias">Referencias</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+  </ul>
+</nav>
+
+<!-- COVER -->
+<section id="cover">
+  <div class="cover-left">
+    <div class="cover-tag">Cartilla Digital</div>
+    <h1 class="cover-title">Con<em>duc</em>tismo</h1>
+    <p class="cover-desc">Una exploración profunda de la corriente que transformó la psicología al poner la conducta observable en el centro de la ciencia. Desde Thorndike hasta Bandura.</p>
+  </div>
+  <div class="cover-right">
+    <div class="cover-index">
+      <div class="ci-title">Contenido</div>
+      <a href="#intro" class="ci-item"><span class="ci-num">01</span><span class="ci-label">Introducción</span><span class="ci-dot"></span></a>
+      <a href="#objeto" class="ci-item"><span class="ci-num">02</span><span class="ci-label">Objeto de Estudio</span><span class="ci-dot"></span></a>
+      <a href="#reflexion" class="ci-item"><span class="ci-num">03</span><span class="ci-label">Reflexión Histórica</span><span class="ci-dot"></span></a>
+      <a href="#autores" class="ci-item"><span class="ci-num">04</span><span class="ci-label">Los 11 Autores</span><span class="ci-dot"></span></a>
+      <a href="#caso" class="ci-item"><span class="ci-num">05</span><span class="ci-label">Caso Real</span><span class="ci-dot"></span></a>
+      <a href="#conclusiones" class="ci-item"><span class="ci-num">06</span><span class="ci-label">Conclusiones</span><span class="ci-dot"></span></a>
+      <a href="#referencias" class="ci-item"><span class="ci-num">07</span><span class="ci-label">Referencias</span><span class="ci-dot"></span></a>
+      <a href="#equipo" class="ci-item"><span class="ci-num">08</span><span class="ci-label">Equipo de Trabajo</span><span class="ci-dot"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 01 INTRO -->
+<section id="intro"><div class="sec">
+  <div class="eyebrow"><span class="ey-num">01</span><span class="ey-rule"></span><span class="ey-tag">Introducción</span></div>
+  <h2 class="sec-title">¿Qué es el<br>Conductismo?</h2>
+  <p class="sec-sub">El giro hacia la ciencia objetiva de la conducta</p>
+  <div class="intro-grid">
+    <div class="intro-body">
+      <p class="intro-lead">El conductismo surgió a principios del siglo XX como una corriente dentro de la psicología científica, enfocada en el estudio objetivo y medible de la <strong>conducta externa</strong>.</p>
+      <p>Como señalan Sáiz, M. y Anguera, B. (2013), este enfoque buscaba posicionar la psicología como una ciencia positiva centrada en la actividad públicamente observable; sin embargo, la psicología actual ha evolucionado hacia una visión más integral, interesada no solo en la conducta externa, sino también en los procesos mentales y la cognición humana.</p>
+      <p>Esta transición ha llevado a hablar de una psicología de la mente y la conducta. En esta cartilla se explora el origen y desarrollo del conductismo, destacando las atribuciones clave de autores como Watson y Skinner, quienes sentaron sus bases; Bandura, que lo vinculó al aprendizaje social; Béjterev, con su psicología objetiva apoyada en respuestas fisiológicas; Spence, que amplió el enfoque de Hull; y Hull, Guthrie, Tolman, Thorndike y Pavlov, cada uno con aportes únicos al estudio del aprendizaje y la conducta.</p>
+      <p>El documento se centra en el objeto de estudio del conductismo, analiza el origen y evolución de la corriente —pasando por el neoconductismo y el conductismo transicional—, examina las principales teorías de los autores mencionados, y concluye con una reflexión sobre el impacto actual del conductismo en la psicología.</p>
+      <div class="pillar-strip">
+        <div class="pillar"><span class="pi">🔬</span><div class="pn">Objetividad</div><div class="pd">Método experimental como base del saber</div></div>
+        <div class="pillar"><span class="pi">👁️</span><div class="pn">Observabilidad</div><div class="pd">Solo la conducta externa es objeto válido</div></div>
+        <div class="pillar"><span class="pi">⚙️</span><div class="pn">Determinismo</div><div class="pd">Toda conducta responde a causas identificables</div></div>
+        <div class="pillar"><span class="pi">🔄</span><div class="pn">Plasticidad</div><div class="pd">El comportamiento puede modificarse</div></div>
+      </div>
+    </div>
+    <div class="intro-aside">
+      <div class="fact-card"><div class="fn">1913</div><div class="fl">Año del manifiesto conductista de Watson</div></div>
+      <div class="fact-card" style="background:var(--teal);"><div class="fn" style="color:var(--gold);">11</div><div class="fl">Teóricos que construyeron esta corriente</div></div>
+      <div class="fact-card" style="background:var(--rust);"><div class="fn" style="color:white;">+80</div><div class="fl">Años de desarrollo y evolución teórica</div></div>
+    </div>
+  </div>
+  <blockquote class="pull-quote">"Este enfoque buscaba posicionar la psicología como una ciencia positiva centrada en la actividad públicamente observable; sin embargo, la psicología actual ha evolucionado hacia una visión más integral, interesada no solo en la conducta externa, sino también en los procesos mentales y la cognición humana."<cite>— Sáiz, M. y Anguera, B. (2013). Historia de la psicología. Editorial UOC. (p. 24)</cite></blockquote>
+</div></section>
+
+<!-- 02 OBJETO -->
+<section id="objeto"><div class="sec" style="padding-top:0;padding-bottom:0;">
+  <div class="eyebrow"><span class="ey-num" style="color:var(--teal-light);">02</span><span class="ey-rule" style="background:rgba(255,255,255,.15);"></span><span class="ey-tag" style="color:rgba(245,240,232,.4);">Objeto de Estudio</span></div>
+  <h2 class="sec-title" style="color:var(--paper);">La Conducta<br>Observable</h2>
+  <p class="sec-sub" style="color:rgba(245,240,232,.55);">El paradigma estímulo–organismo–respuesta</p>
+  <div class="er-diagram">
+    <div class="er-box eb"><div class="erl">Entrada</div><div class="erm">Estímulo</div><div class="erd">Evento del entorno<br>que provoca reacción</div></div>
+    <div class="er-arrow">→</div>
+    <div class="er-box"><div class="erl">Mediador</div><div class="erm">Organismo</div><div class="erd">"Caja negra" o<br>variables intermedias</div></div>
+    <div class="er-arrow">→</div>
+    <div class="er-box rb"><div class="erl">Salida</div><div class="erm">Respuesta</div><div class="erd">Comportamiento<br>observable y medible</div></div>
+  </div>
+  <p style="color:rgba(245,240,232,.7);font-size:.92rem;max-width:700px;margin:0 auto 2.5rem;text-align:center;line-height:1.8;">El modelo <strong style="color:var(--amber);">E–R</strong> es la unidad básica de análisis. El neoconductismo añadió al organismo (E–O–R), introduciendo procesos internos como mediadores.</p>
+  <table class="ctable">
+    <thead><tr><th>Concepto</th><th>Definición</th><th>Ejemplo</th><th>Autor</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ct">Estímulo (E)</span></td><td>Evento del ambiente que activa una respuesta</td><td>Sonido de una campana</td><td style="color:rgba(245,240,232,.5)">Pavlov</td></tr>
+      <tr><td><span class="ct">Respuesta (R)</span></td><td>Reacción observable del organismo</td><td>Salivación del perro</td><td style="color:rgba(245,240,232,.5)">Pavlov / Watson</td></tr>
+      <tr><td><span class="ct">Condicionamiento</span></td><td>Aprendizaje por asociación E-R</td><td>Campana → salivación</td><td style="color:rgba(245,240,232,.5)">Pavlov / Skinner</td></tr>
+      <tr><td><span class="ct">Reforzamiento</span></td><td>Consecuencia que aumenta la probabilidad de una conducta</td><td>Premio con alimento</td><td style="color:rgba(245,240,232,.5)">Thorndike / Skinner</td></tr>
+      <tr><td><span class="ct">Extinción</span></td><td>Desaparición de una respuesta al retirar el reforzador</td><td>Ignorar una rabieta</td><td style="color:rgba(245,240,232,.5)">Pavlov / Skinner</td></tr>
+      <tr><td><span class="ct">Moldeamiento</span></td><td>Reforzamiento de aproximaciones sucesivas a la conducta meta</td><td>Enseñar a escribir</td><td style="color:rgba(245,240,232,.5)">Skinner</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<!-- 03 REFLEXIÓN -->
+<section id="reflexion"><div class="sec">
+  <div class="eyebrow"><span class="ey-num">03</span><span class="ey-rule"></span><span class="ey-tag">Reflexión Histórica</span></div>
+  <h2 class="sec-title">Evolución del<br>Conductismo</h2>
+  <p class="sec-sub">Del surgimiento al neoconductismo y la apertura cognitiva</p>
+  <p style="max-width:750px;margin-bottom:2.5rem;font-size:.96rem;line-height:1.8;">El conductismo atravesó más de ochenta años de debates y reformulaciones. Identificamos tres grandes momentos:</p>
+  <div class="phases-grid">
+    <div class="phase-card">
+      <div class="ph-period">1890 — 1930</div><div class="ph-name">Conductismo Clásico</div>
+      <div class="ph-desc">Watson formaliza el conductismo en 1913, con raíces en Thorndike y Pavlov. El esquema E→R se convierte en la unidad de análisis. Se rechaza toda referencia a la mente.</div>
+      <div class="ph-chips"><span class="chip">Thorndike</span><span class="chip">Pavlov</span><span class="chip">Béjterev</span><span class="chip">Watson</span></div>
+    </div>
+    <div class="phase-card">
+      <div class="ph-period">1930 — 1960</div><div class="ph-name">Neoconductismo</div>
+      <div class="ph-desc">Skinner, Hull, Guthrie, Tolman, Spence y Miller amplían el paradigma. Se introducen variables intervinientes y se formaliza el condicionamiento operante.</div>
+      <div class="ph-chips"><span class="chip">Skinner</span><span class="chip">Guthrie</span><span class="chip">Tolman</span><span class="chip">Hull</span><span class="chip">Spence</span><span class="chip">N. Miller</span></div>
+    </div>
+    <div class="phase-card">
+      <div class="ph-period">1960 — presente</div><div class="ph-name">Conductismo Social</div>
+      <div class="ph-desc">Bandura demuestra el aprendizaje observacional e introduce variables cognitivas como la autoeficacia. El conductismo se abre definitivamente al interior del organismo.</div>
+      <div class="ph-chips"><span class="chip">Bandura</span><span class="chip">Terapia TCC</span></div>
+    </div>
+  </div>
+  <h3 style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;margin:4rem 0 2rem;">Línea del Tiempo</h3>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot" style="background:var(--amber)"></div><div class="tl-year">1898 – 1905</div><div class="tl-title">Thorndike — Conexionismo</div><div class="tl-body">Primeros experimentos con animales en cajas problema. Formula la Ley del Efecto como base empírica del reforzamiento.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--teal)"></div><div class="tl-year">1897 – 1927</div><div class="tl-title">Pavlov y Béjterev — Reflejo condicionado</div><div class="tl-body">Pavlov descubre el condicionamiento clásico. Béjterev desarrolla la reflexología objetiva en Rusia de forma independiente.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--rust)"></div><div class="tl-year">1913</div><div class="tl-title">Watson — El Manifiesto</div><div class="tl-body">"La psicología como la ve el conductista" define el programa científico. Experimento del Pequeño Alberto (1920).</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--lavender)"></div><div class="tl-year">1930 – 1950</div><div class="tl-title">Skinner, Hull, Guthrie, Tolman — Neoconductismo</div><div class="tl-body">Condicionamiento operante, teoría matemática del aprendizaje, mapas cognitivos y aprendizaje por contigüidad.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--sage)"></div><div class="tl-year">1940 – 1960</div><div class="tl-title">Spence y Neal Miller — Refinamiento</div><div class="tl-body">Spence refina el modelo de Hull. Miller demuestra el condicionamiento del SNA y establece las bases del biofeedback.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--rust)"></div><div class="tl-year">1963 – 1977</div><div class="tl-title">Bandura — Aprendizaje Social</div><div class="tl-body">El experimento del Muñeco Bobo demuestra el aprendizaje observacional. La autoeficacia abre el conductismo a la cognición.</div></div>
+  </div>
+</div></section>
+
+<!-- 04 AUTORES -->
+<section id="autores"><div class="sec">
+  <div class="eyebrow"><span class="ey-num">04</span><span class="ey-rule"></span><span class="ey-tag">Teorías Principales</span></div>
+  <h2 class="sec-title">Los 11 Autores<br>del Conductismo</h2>
+  <p class="sec-sub">Dos por sección — postulados, contribuciones e imagen de cada teórico</p>
+
+  <!-- helper macro as HTML repetition -->
+
+  <!-- PAR 1 -->
+  <div class="authors-pair">
+    <div class="avc">
+      <div class="aph">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Edward_Thorndike.jpg/440px-Edward_Thorndike.jpg" alt="Edward Thorndike"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#8b5e0a><span>T</span></div><div class=aph-badge><div class=aph-name>Edward Thorndike</div><span class=aph-num>01/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Edward Thorndike</div><span class="aph-num">01 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#c9871c"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1874 – 1949 · Estadounidense</span><span class="atheory" style="color:#8b5e0a;border-color:#c9871c">Conexionismo</span></div>
+        <p class="aintro">Precursor del conductismo, primero en aplicar el método experimental al aprendizaje animal con sus famosas <em>cajas problema</em>.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#c9871c"></span><div><strong>Ley del Efecto:</strong> las respuestas satisfactorias se fortalecen; las molestas se debilitan.</div></li>
+          <li><span class="adot" style="background:#c9871c"></span><div><strong>Ley del Ejercicio:</strong> la práctica repetida fortalece las conexiones E-R.</div></li>
+          <li><span class="adot" style="background:#c9871c"></span><div><strong>Ley de la Disposición:</strong> la predisposición del organismo influye en el aprendizaje.</div></li>
+          <li><span class="adot" style="background:#c9871c"></span><div>El aprendizaje es la formación de <strong>conexiones neuronales</strong> entre E y R.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#c9871c"><div class="acl">Aporte</div><div class="act">Sentó las bases empíricas del reforzamiento antes de que el conductismo existiera formalmente.</div></div>
+      </div>
+    </div>
+    <div class="avc">
+      <div class="aph">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Ivan_Pavlov_NLM3.jpg/440px-Ivan_Pavlov_NLM3.jpg" alt="Iván Pavlov"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#1a6b6b><span>P</span></div><div class=aph-badge><div class=aph-name>Iván Pavlov</div><span class=aph-num>02/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Iván Pavlov</div><span class="aph-num">02 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#1a6b6b"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1849 – 1936 · Ruso · Nobel 1904</span><span class="atheory" style="color:#1a6b6b;border-color:#1a6b6b">Cond. Clásico</span></div>
+        <p class="aintro">Fisiólogo que descubrió accidentalmente el reflejo condicionado estudiando la digestión en perros, sentando el paradigma del aprendizaje asociativo.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#1a6b6b"></span><div><strong>EI → RI:</strong> el estímulo incondicionado produce respuesta natural automática.</div></li>
+          <li><span class="adot" style="background:#1a6b6b"></span><div><strong>EC → RC:</strong> estímulo neutro asociado al EI adquiere poder de respuesta.</div></li>
+          <li><span class="adot" style="background:#1a6b6b"></span><div><strong>Extinción:</strong> la RC desaparece si el EC se presenta sin el EI.</div></li>
+          <li><span class="adot" style="background:#1a6b6b"></span><div><strong>Recuperación espontánea:</strong> la RC puede reaparecer tras descanso.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#1a6b6b"><div class="acl">Aporte</div><div class="act">Estableció el paradigma del condicionamiento clásico como modelo universal del aprendizaje asociativo.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAR 2 -->
+  <div class="authors-pair">
+    <div class="avc">
+      <div class="aph">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Vladimir_Bekhterev.jpg/440px-Vladimir_Bekhterev.jpg" alt="Vladímir Béjterev"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#5a7a52><span>B</span></div><div class=aph-badge><div class=aph-name>Vladímir Béjterev</div><span class=aph-num>03/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Vladímir Béjterev</div><span class="aph-num">03 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#5a7a52"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1857 – 1927 · Ruso</span><span class="atheory" style="color:#5a7a52;border-color:#5a7a52">Reflexología</span></div>
+        <p class="aintro">Neurólogo que desarrolló la reflexología como ciencia objetiva de la conducta, de forma paralela e independiente a Pavlov.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#5a7a52"></span><div>Toda actividad psíquica se reduce a <strong>reflejos observables</strong> del SN.</div></li>
+          <li><span class="adot" style="background:#5a7a52"></span><div>La psicología debe emplear exclusivamente <strong>métodos objetivos</strong>.</div></li>
+          <li><span class="adot" style="background:#5a7a52"></span><div>Los <strong>reflejos asociativos</strong> son la unidad básica del aprendizaje.</div></li>
+          <li><span class="adot" style="background:#5a7a52"></span><div>La energía nerviosa puede transferirse y asociarse con nuevos estímulos.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#5a7a52"><div class="acl">Aporte</div><div class="act">Aportó perspectiva neurológica al objetivismo y anticipó postulados del conductismo americano.</div></div>
+      </div>
+    </div>
+    <div class="avc">
+      <div class="aph">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/John_Broadus_Watson.jpg/440px-John_Broadus_Watson.jpg" alt="John B. Watson"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#9b3a1a><span>W</span></div><div class=aph-badge><div class=aph-name>John B. Watson</div><span class=aph-num>04/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">John B. Watson</div><span class="aph-num">04 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#9b3a1a"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1878 – 1958 · Estadounidense</span><span class="atheory" style="color:#9b3a1a;border-color:#9b3a1a">Cond. Clásico</span></div>
+        <p class="aintro">Fundador oficial del conductismo. Su artículo de 1913 redefinió la psicología como ciencia de la conducta observable.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#9b3a1a"></span><div>La psicología es una <strong>ciencia natural objetiva</strong>; su único objeto es la conducta.</div></li>
+          <li><span class="adot" style="background:#9b3a1a"></span><div>Las emociones son <strong>respuestas aprendidas</strong> a estímulos del ambiente.</div></li>
+          <li><span class="adot" style="background:#9b3a1a"></span><div>El desarrollo es producto del <strong>ambiente</strong>, no de la herencia.</div></li>
+          <li><span class="adot" style="background:#9b3a1a"></span><div>Exp. <strong>Pequeño Alberto</strong> (1920): condicionamiento del miedo en humanos.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#9b3a1a"><div class="acl">Aporte</div><div class="act">Fundó formalmente el conductismo y demostró empíricamente el condicionamiento en humanos.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAR 3 -->
+  <div class="authors-pair">
+    <div class="avc">
+      <div class="aph">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/B.F._Skinner_at_Harvard_circa_1950.jpg/440px-B.F._Skinner_at_Harvard_circa_1950.jpg" alt="B.F. Skinner"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#3a4a5c><span>S</span></div><div class=aph-badge><div class=aph-name>B.F. Skinner</div><span class=aph-num>05/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">B.F. Skinner</div><span class="aph-num">05 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#3a4a5c"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1904 – 1990 · Estadounidense</span><span class="atheory" style="color:#3a4a5c;border-color:#3a4a5c">Cond. Operante</span></div>
+        <p class="aintro">El conductista más influyente del siglo XX. Desarrolló el condicionamiento operante y un sistema que abarcó desde la psicología básica hasta la organización social.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#3a4a5c"></span><div><strong>Cond. operante:</strong> la conducta es controlada por sus consecuencias.</div></li>
+          <li><span class="adot" style="background:#3a4a5c"></span><div><strong>Refuerzo +/−:</strong> aumentan la conducta por adición o remoción de estímulos.</div></li>
+          <li><span class="adot" style="background:#3a4a5c"></span><div><strong>Programas de reforzamiento:</strong> razón e intervalo fijos o variables.</div></li>
+          <li><span class="adot" style="background:#3a4a5c"></span><div><strong>Moldeamiento:</strong> reforzamiento de aproximaciones sucesivas.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#3a4a5c"><div class="acl">Aporte</div><div class="act">Creó el marco más sistemático del conductismo; base del análisis aplicado del comportamiento.</div></div>
+      </div>
+    </div>
+    <div class="avc">
+      <div class="aph" style="background:#4a5e38">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d4/Edwin_Ray_Guthrie.jpg/440px-Edwin_Ray_Guthrie.jpg" alt="Edwin Ray Guthrie"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#5c7a3e><span>G</span></div><div class=aph-badge><div class=aph-name>Edwin Ray Guthrie</div><span class=aph-num>06/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Edwin Ray Guthrie</div><span class="aph-num">06 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#5c7a3e"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1886 – 1959 · Estadounidense</span><span class="atheory" style="color:#5c7a3e;border-color:#5c7a3e">Contigüidad</span></div>
+        <p class="aintro">Propuso una teoría minimalista del aprendizaje basada en un único principio: la contigüidad temporal entre estímulo y respuesta.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#5c7a3e"></span><div><strong>Contigüidad:</strong> E asociado a R tenderá a elicitar esa R en el futuro.</div></li>
+          <li><span class="adot" style="background:#5c7a3e"></span><div><strong>Aprendizaje en un ensayo:</strong> ocurre en el primer emparejamiento E-R.</div></li>
+          <li><span class="adot" style="background:#5c7a3e"></span><div>El olvido es reemplazo: nuevos E se asocian a nuevas R.</div></li>
+          <li><span class="adot" style="background:#5c7a3e"></span><div>El reforzamiento <strong>no es necesario</strong>; solo importa la contigüidad temporal.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#5c7a3e"><div class="acl">Aporte</div><div class="act">Demostró que el aprendizaje puede explicarse con un principio único y parsimonioso.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAR 4 -->
+  <div class="authors-pair">
+    <div class="avc">
+      <div class="aph" style="background:#5a4a7a">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Tolman.jpg/440px-Tolman.jpg" alt="Edward C. Tolman"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#6b5b8a><span>T</span></div><div class=aph-badge><div class=aph-name>Edward C. Tolman</div><span class=aph-num>07/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Edward C. Tolman</div><span class="aph-num">07 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#6b5b8a"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1886 – 1959 · Estadounidense</span><span class="atheory" style="color:#6b5b8a;border-color:#6b5b8a">Propositivo</span></div>
+        <p class="aintro">El "conductista disidente". Introdujo variables cognitivas en el análisis conductual y anticipó la psicología cognitiva con sus mapas mentales.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#6b5b8a"></span><div><strong>Conducta propositiva:</strong> el organismo actúa orientado hacia metas.</div></li>
+          <li><span class="adot" style="background:#6b5b8a"></span><div><strong>Aprendizaje latente:</strong> se aprende sin reforzamiento, solo por exploración.</div></li>
+          <li><span class="adot" style="background:#6b5b8a"></span><div><strong>Mapas cognitivos:</strong> representaciones internas del espacio y el ambiente.</div></li>
+          <li><span class="adot" style="background:#6b5b8a"></span><div>El reforzamiento no es condición necesaria para el aprendizaje.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#6b5b8a"><div class="acl">Aporte</div><div class="act">Puente fundamental entre conductismo y cognitivismo; el mapa cognitivo revolucionó la psicología del aprendizaje.</div></div>
+      </div>
+    </div>
+    <div class="avc">
+      <div class="aph" style="background:#7a3a0a">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Clark_L_Hull.jpg/440px-Clark_L_Hull.jpg" alt="Clark L. Hull"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#8b4a1a><span>H</span></div><div class=aph-badge><div class=aph-name>Clark L. Hull</div><span class=aph-num>08/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Clark Leonard Hull</div><span class="aph-num">08 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#8b4a1a"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1884 – 1952 · Estadounidense</span><span class="atheory" style="color:#8b4a1a;border-color:#8b4a1a">Hip-Deductivo</span></div>
+        <p class="aintro">Intentó matematizar el conductismo construyendo un sistema formal de postulados para predecir la conducta con precisión cuantitativa.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#8b4a1a"></span><div><strong>Fuerza del hábito (sHr):</strong> se incrementa con el número de reforzamientos.</div></li>
+          <li><span class="adot" style="background:#8b4a1a"></span><div><strong>Drive (D):</strong> estado motivacional que energiza la conducta.</div></li>
+          <li><span class="adot" style="background:#8b4a1a"></span><div><strong>E = H × D</strong> (Potencial excitatorio = Hábito × Drive).</div></li>
+          <li><span class="adot" style="background:#8b4a1a"></span><div><strong>Reducción del impulso:</strong> el reforzamiento reduce estados de necesidad.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#8b4a1a"><div class="acl">Aporte</div><div class="act">Primer intento formal de matematizar el aprendizaje; influyó en décadas de investigación sobre motivación.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAR 5 -->
+  <div class="authors-pair">
+    <div class="avc">
+      <div class="aph" style="background:#1a4a5a">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Kenneth_Spence.jpg/440px-Kenneth_Spence.jpg" alt="Kenneth Spence"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#2a5c6a><span>S</span></div><div class=aph-badge><div class=aph-name>Kenneth Spence</div><span class=aph-num>09/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Kenneth Spence</div><span class="aph-num">09 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#2a5c6a"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1907 – 1967 · Estadounidense</span><span class="atheory" style="color:#2a5c6a;border-color:#2a5c6a">Hull-Spence</span></div>
+        <p class="aintro">Colaborador y refinador de la teoría de Hull. Distinguió con precisión entre aprendizaje y motivación e incorporó el incentivo al modelo formal.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#2a5c6a"></span><div>Distinción formal entre <strong>aprendizaje (H)</strong> y <strong>motivación (D)</strong>.</div></li>
+          <li><span class="adot" style="background:#2a5c6a"></span><div><strong>Incentivo (K):</strong> el valor del reforzador contribuye multiplicativamente.</div></li>
+          <li><span class="adot" style="background:#2a5c6a"></span><div><strong>E = H × D × K</strong> — fórmula extendida de Hull-Spence.</div></li>
+          <li><span class="adot" style="background:#2a5c6a"></span><div>La <strong>ansiedad</strong> actúa como drive emocional que modula el aprendizaje.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#2a5c6a"><div class="acl">Aporte</div><div class="act">Refinó el modelo de Hull y conectó el conductismo con el estudio científico de la ansiedad.</div></div>
+      </div>
+    </div>
+    <div class="avc">
+      <div class="aph" style="background:#5a2a5a">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Neal_Miller.jpg/440px-Neal_Miller.jpg" alt="Neal Miller"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#6a3a6a><span>M</span></div><div class=aph-badge><div class=aph-name>Neal Miller</div><span class=aph-num>10/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Neal Miller</div><span class="aph-num">10 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#6a3a6a"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1909 – 2002 · Estadounidense</span><span class="atheory" style="color:#6a3a6a;border-color:#6a3a6a">Cond. Aplicado</span></div>
+        <p class="aintro">Amplió el conductismo hacia el conflicto motivacional, el aprendizaje del SNA y sentó las bases del biofeedback clínico moderno.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#6a3a6a"></span><div><strong>Conflicto motivacional:</strong> aproximación-evitación explica dilemas conductuales.</div></li>
+          <li><span class="adot" style="background:#6a3a6a"></span><div>El <strong>miedo</strong> es una pulsión aprendida que puede condicionar nuevas respuestas.</div></li>
+          <li><span class="adot" style="background:#6a3a6a"></span><div>El <strong>SNA</strong> puede condicionarse (frecuencia cardíaca, presión arterial).</div></li>
+          <li><span class="adot" style="background:#6a3a6a"></span><div><strong>Biofeedback:</strong> control voluntario de funciones fisiológicas involuntarias.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#6a3a6a"><div class="acl">Aporte</div><div class="act">Conectó el conductismo con la psicofisiología y abrió nuevas fronteras en la medicina conductual.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAR 6: Bandura solo -->
+  <div class="authors-pair" style="grid-template-columns:1fr 1fr">
+    <div class="avc">
+      <div class="aph">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Albert_Bandura_2007.jpg/440px-Albert_Bandura_2007.jpg" alt="Albert Bandura"
+          onerror="this.parentElement.innerHTML='<div class=aph-placeholder style=background:#8b1a2a><span>B</span></div><div class=aph-badge><div class=aph-name>Albert Bandura</div><span class=aph-num>11/11</span></div>'">
+        <div class="aph-badge"><div class="aph-name">Albert Bandura</div><span class="aph-num">11 / 11</span></div>
+      </div>
+      <div class="abar" style="background:#8b1a2a"></div>
+      <div class="avb">
+        <div class="ameta"><span class="adates">1925 – 2021 · Canadiense</span><span class="atheory" style="color:#8b1a2a;border-color:#8b1a2a">Aprend. Social</span></div>
+        <p class="aintro">Figura de cierre y puente histórico. Demostró que se puede aprender observando modelos sin reforzamiento directo, integrando cognición y conducta.</p>
+        <div class="apt">Postulados</div>
+        <ul class="apl">
+          <li><span class="adot" style="background:#8b1a2a"></span><div><strong>Aprendizaje observacional:</strong> se aprende viendo la conducta de otros.</div></li>
+          <li><span class="adot" style="background:#8b1a2a"></span><div><strong>Exp. Bobo Doll (1961-63):</strong> imitación de agresión sin refuerzo directo.</div></li>
+          <li><span class="adot" style="background:#8b1a2a"></span><div><strong>Autoeficacia:</strong> la creencia en la propia capacidad determina la conducta.</div></li>
+          <li><span class="adot" style="background:#8b1a2a"></span><div><strong>Determinismo recíproco:</strong> persona, conducta y ambiente se influyen mutuamente.</div></li>
+        </ul>
+        <div class="acont" style="border-color:#8b1a2a"><div class="acl">Aporte</div><div class="act">Base teórica de la terapia cognitivo-conductual y del estudio moderno de la autoeficacia y la motivación.</div></div>
+      </div>
+    </div>
+    <!-- Cierre visual -->
+    <div style="background:var(--ink);display:flex;align-items:center;justify-content:center;padding:3rem;min-height:300px">
+      <div style="text-align:center">
+        <div style="font-family:var(--font-display);font-size:5rem;font-weight:900;color:var(--amber);line-height:1">11</div>
+        <div style="font-family:var(--font-mono);font-size:.68rem;letter-spacing:.2em;color:rgba(245,240,232,.5);text-transform:uppercase;margin:.6rem 0">Teóricos del Conductismo</div>
+        <div style="width:40px;height:2px;background:var(--amber);margin:.8rem auto"></div>
+        <div style="font-size:.85rem;color:rgba(245,240,232,.5);line-height:1.7;max-width:200px">Cada autor amplió la comprensión científica de la conducta humana y animal.</div>
+      </div>
+    </div>
+  </div>
+
+</div></section>
+
+<!-- 05 CASO REAL -->
+<section id="caso"><div class="sec" style="padding-top:0;padding-bottom:0">
+  <div class="eyebrow"><span class="ey-num" style="color:var(--teal-light)">05</span><span class="ey-rule" style="background:rgba(255,255,255,.15)"></span><span class="ey-tag" style="color:rgba(245,240,232,.4)">Aplicación Práctica</span></div>
+  <h2 class="sec-title" style="color:var(--paper)">Caso Real:<br>El Aula de Clases</h2>
+  <p class="sec-sub" style="color:rgba(245,240,232,.55)">Condicionamiento operante (Skinner) + Aprendizaje social (Bandura) aplicados a la educación</p>
+  <div class="caso-grid">
+    <div class="caso-left">
+      <div class="caso-label">Situación</div>
+      <div class="caso-stitle">Un estudiante no participa en clase por miedo a equivocarse</div>
+      <p style="font-size:.9rem;color:rgba(245,240,232,.7);margin-bottom:1.5rem;line-height:1.75">Sofía, 10 años, es inteligente pero permanece en silencio. Cuando intentó responder una vez fue corregida abruptamente. Desde entonces evita participar. Su silencio es una conducta de <em>evitación</em> mantenida por reforzamiento negativo.</p>
+      <div class="cstep"><div class="cstep-n">1</div><div class="cstep-t"><strong>Identificación de la conducta</strong>La evitación es reforzada negativamente: al no responder, Sofía evita el malestar de equivocarse públicamente, lo que fortalece el silencio.</div></div>
+      <div class="cstep"><div class="cstep-n">2</div><div class="cstep-t"><strong>Intervención — Moldeamiento (Skinner)</strong>La docente diseña un plan: cada pequeño acercamiento a la participación (levantar la mano, responder en voz baja) se refuerza positivamente con elogios específicos.</div></div>
+      <div class="cstep"><div class="cstep-n">3</div><div class="cstep-t"><strong>Programa de razón variable</strong>Sofía no sabe cuándo recibirá el reconocimiento, lo que mantiene alta la tasa de respuesta. Se elimina el castigo para no reinstaurar la evitación.</div></div>
+      <div class="cstep"><div class="cstep-n">4</div><div class="cstep-t"><strong>Modelado y refuerzo vicario (Bandura)</strong>La docente refuerza visiblemente a otros estudiantes cuando participan, permitiendo que Sofía observe que equivocarse es aceptado.</div></div>
+      <div class="ctheory">
+        <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.15em;color:var(--teal-light);margin-bottom:.4rem">Marco Teórico</div>
+        <div style="font-size:.87rem;color:rgba(245,240,232,.8);line-height:1.65">Integra el <strong style="color:white">condicionamiento operante</strong> de Skinner (refuerzo positivo, moldeamiento, programas de reforzamiento) con el <strong style="color:white">aprendizaje observacional</strong> de Bandura (modelado, refuerzo vicario, autoeficacia).</div>
+      </div>
+    </div>
+    <div class="caso-right">
+      <div class="caso-label" style="color:rgba(26,18,8,.55)">Resultados semana a semana</div>
+      <div class="cresult"><span class="cri">📈</span><div class="crt">Semana 1–2</div><div class="crtext">Sofía comienza a levantar la mano ocasionalmente. Cada intento recibe refuerzo positivo inmediato. La conducta de evitación disminuye gradualmente.</div></div>
+      <div class="cresult"><span class="cri">🗣️</span><div class="crt">Semana 3–4</div><div class="crtext">Sofía responde en voz audible. El moldeamiento progresivo hizo posible este avance sin forzarla. Compañeros también participan más (efecto observacional).</div></div>
+      <div class="cresult"><span class="cri">⭐</span><div class="crt">Mes 2</div><div class="crtext">Sofía participa activamente. Su autoeficacia se ha incrementado: cree en su propia capacidad. La conducta se generalizó a otras asignaturas.</div></div>
+      <div class="cdiag">
+        <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.15em;color:rgba(26,18,8,.55);margin-bottom:.6rem">Esquema E-O-R Aplicado</div>
+        <div class="cdr"><span class="cdrl" style="color:rgba(26,18,8,.5)">E</span><span style="background:rgba(26,18,8,.1);padding:.2rem .6rem;font-size:.8rem">Pregunta de la docente</span></div>
+        <div class="cdr" style="padding-left:50px">→</div>
+        <div class="cdr"><span class="cdrl" style="color:rgba(26,18,8,.5)">O</span><span style="background:rgba(26,18,8,.1);padding:.2rem .6rem;font-size:.8rem">Expectativa de éxito (autoeficacia)</span></div>
+        <div class="cdr" style="padding-left:50px">→</div>
+        <div class="cdr"><span class="cdrl" style="color:rgba(26,18,8,.5)">R</span><span style="background:rgba(26,18,8,.1);padding:.2rem .6rem;font-size:.8rem">Participación activa en clase</span></div>
+        <div class="cdr" style="padding-left:50px">↓</div>
+        <div class="cdr"><span class="cdrl" style="color:rgba(26,18,8,.5)">RF+</span><span style="background:rgba(26,18,8,.15);padding:.2rem .6rem;font-size:.8rem;font-weight:600">Elogio específico → fortalece la conducta</span></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 06 CONCLUSIONES -->
+<section id="conclusiones"><div class="sec">
+  <div class="eyebrow"><span class="ey-num">06</span><span class="ey-rule"></span><span class="ey-tag">Conclusiones</span></div>
+  <h2 class="sec-title">Dos Conclusiones<br>Fundamentales</h2>
+  <p class="sec-sub">El legado científico y humanístico del conductismo</p>
+  <div class="concl-grid">
+    <div class="concl-card" data-num="1">
+      <div class="cn">CONCLUSIÓN 01</div>
+      <div class="ct2">El conductismo transformó la psicología en una ciencia rigurosa y aplicable</div>
+      <div class="ctext">
+        <p>Antes del conductismo, la psicología dependía de la introspección, lo que la mantenía alejada del rigor de las ciencias naturales. El proyecto conductista —desde Thorndike hasta Skinner— demostró que la conducta puede estudiarse con la misma objetividad que los fenómenos físicos.</p>
+        <p>Su legado metodológico es indiscutible: el experimento controlado, la medición precisa de respuestas y la sistematización del reforzamiento son hoy herramientas estándar en toda la psicología científica, incluyendo las corrientes que lo superaron.</p>
+        <p>Disciplinas como el análisis aplicado del comportamiento, la psicología educativa, la neurociencia del aprendizaje y la terapia cognitivo-conductual son hijos directos de este legado.</p>
+      </div>
+      <div class="chl"><span class="chli">🔬</span><span class="chlt">"El conductismo no fue el destino final de la psicología, pero sí fue el camino que la hizo científicamente creíble."</span></div>
+    </div>
+    <div class="concl-card" data-num="2" style="transition-delay:.15s">
+      <div class="cn">CONCLUSIÓN 02</div>
+      <div class="ct2">La conducta humana no puede comprenderse sin considerar al organismo que aprende</div>
+      <div class="ctext">
+        <p>La gran lección de la evolución interna del conductismo es que el modelo E→R original era insuficiente. Fueron los propios conductistas —Tolman, Hull, Spence, Miller y Bandura— quienes demostraron que el organismo no es una caja vacía: sus expectativas, mapas cognitivos y creencias de autoeficacia median entre el estímulo y la respuesta.</p>
+        <p>Esta apertura al interior del organismo no fue una traición al conductismo sino su maduración natural. El ser humano aprende observando, anticipando, representando y evaluando su propia capacidad: procesos que el conductismo clásico ignoraba pero que el neoconductismo integró gradualmente.</p>
+        <p>La psicología del siglo XXI —cognitiva, neurobiológica y social— es deudora de esta tensión productiva entre la objetividad conductual y la complejidad del organismo que aprende.</p>
+      </div>
+      <div class="chl"><span class="chli">🧠</span><span class="chlt">"La caja negra nunca estuvo vacía. El conductismo tardó en abrirla, pero cuando lo hizo, encontró la psicología cognitiva esperando adentro."</span></div>
+    </div>
+  </div>
+  <blockquote class="pull-quote" style="margin-top:3rem">"El conductismo nos enseñó a mirar la conducta; el neoconductismo nos enseñó que detrás de la conducta hay un organismo; y Bandura nos recordó que ese organismo vive en un mundo social que también aprende y que también observa."<cite>— Síntesis integradora</cite></blockquote>
+</div></section>
+
+<!-- REFERENCIAS -->
+<section id="referencias" style="background:var(--ink);color:var(--paper);padding:5rem 0;">
+  <div class="sec" style="padding-top:0;padding-bottom:0;">
+    <div class="eyebrow">
+      <span class="ey-num" style="color:var(--teal-light);">07</span>
+      <span class="ey-rule" style="background:rgba(255,255,255,.15);"></span>
+      <span class="ey-tag" style="color:rgba(245,240,232,.4);">Bibliografía</span>
+    </div>
+    <h2 class="sec-title" style="color:var(--paper);">Referencias<br>Bibliográficas</h2>
+
+    <div style="display:flex;flex-direction:column;gap:1.2rem;margin-top:1rem;">
+
+      <div style="display:flex;gap:1.5rem;padding:1.2rem 1.4rem;background:rgba(255,255,255,.04);border-left:3px solid var(--amber);align-items:flex-start;">
+        <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--amber);letter-spacing:.12em;min-width:24px;margin-top:.15rem;">01</span>
+        <p style="font-size:.88rem;line-height:1.75;color:rgba(245,240,232,.82);">López Cruz, D. (2021). Edward Lee Thorndike y John Broadus Watson: dos explicaciones del aprendizaje. <em>Educere: Revista Venezolana de Educación, 81</em>, 647–656. <span style="color:var(--teal-light);word-break:break-all;">https://research-ebsco-com.bibliotecavirtual.unad.edu.co/linkprocessor/v2-external?opid=qcagk4&amp;recordId=6azduuaior&amp;url=https%3A%2F%2Fdialnet.unirioja.es%2Fservlet%2Fcatart%3Fcodigo%3D8485441</span></p>
+      </div>
+
+      <div style="display:flex;gap:1.5rem;padding:1.2rem 1.4rem;background:rgba(255,255,255,.04);border-left:3px solid var(--teal-light);align-items:flex-start;">
+        <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--teal-light);letter-spacing:.12em;min-width:24px;margin-top:.15rem;">02</span>
+        <p style="font-size:.88rem;line-height:1.75;color:rgba(245,240,232,.82);">Pérez Álvarez, M. (2021). ¿Qué nos importa Skinner, treinta años después? <em>Papeles del Psicólogo, 42</em>(1), 10–20. <span style="color:var(--teal-light);">https://doi.org/10.23923/pap.psicol2020.2940</span></p>
+      </div>
+
+      <div style="display:flex;gap:1.5rem;padding:1.2rem 1.4rem;background:rgba(255,255,255,.04);border-left:3px solid var(--rust);align-items:flex-start;">
+        <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--rust);letter-spacing:.12em;min-width:24px;margin-top:.15rem;">03</span>
+        <p style="font-size:.88rem;line-height:1.75;color:rgba(245,240,232,.82);">Pérez, E. (2023). <em>El conductismo: enfoque clásico de la psicología</em> [Objeto virtual de aprendizaje OVA]. Repositorio Institucional UNAD. <span style="color:var(--teal-light);">https://repository.unad.edu.co/handle/10596/54778</span></p>
+      </div>
+
+      <div style="display:flex;gap:1.5rem;padding:1.2rem 1.4rem;background:rgba(255,255,255,.04);border-left:3px solid var(--lavender);align-items:flex-start;">
+        <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--lavender);letter-spacing:.12em;min-width:24px;margin-top:.15rem;">04</span>
+        <p style="font-size:.88rem;line-height:1.75;color:rgba(245,240,232,.82);">Sáiz, M. y Anguera, B. (2013). <em>Historia de la psicología</em>. Editorial UOC. <span style="color:var(--teal-light);word-break:break-all;">https://elibro-net.bibliotecavirtual.unad.edu.co/es/ereader/unad/56425%20?page=1</span></p>
+      </div>
+
+      <div style="display:flex;gap:1.5rem;padding:1.2rem 1.4rem;background:rgba(255,255,255,.04);border-left:3px solid var(--sage);align-items:flex-start;">
+        <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--sage);letter-spacing:.12em;min-width:24px;margin-top:.15rem;">05</span>
+        <p style="font-size:.88rem;line-height:1.75;color:rgba(245,240,232,.82);">Töpf, J. (2020). <em>Psicología: la conducta humana</em> (ed.). Eudeba. <span style="color:var(--teal-light);word-break:break-all;">https://elibro-net.bibliotecavirtual.unad.edu.co/es/ereader/unad/153600?page=93</span></p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPO -->
+<section id="equipo" style="background:var(--cream);padding:5rem 0;">
+  <div class="sec" style="padding-top:0;padding-bottom:0;">
+    <div class="eyebrow">
+      <span class="ey-num">08</span>
+      <span class="ey-rule"></span>
+      <span class="ey-tag">Elaborado por</span>
+    </div>
+    <h2 class="sec-title">Equipo de<br>Trabajo</h2>
+
+    <div style="display:flex;gap:1.2rem;margin-top:2rem;flex-wrap:nowrap;">
+
+      <div style="flex:1;background:white;padding:1.8rem 1rem;box-shadow:0 4px 20px rgba(0,0,0,.06);border-top:4px solid var(--amber);display:flex;flex-direction:column;align-items:center;text-align:center;gap:.8rem;">
+        <div style="width:50px;height:50px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:white;">A</span>
+        </div>
+        <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;line-height:1.35;color:var(--ink);">Ana Carolina<br>Bedoya Cardona</div>
+      </div>
+
+      <div style="flex:1;background:white;padding:1.8rem 1rem;box-shadow:0 4px 20px rgba(0,0,0,.06);border-top:4px solid var(--teal);display:flex;flex-direction:column;align-items:center;text-align:center;gap:.8rem;">
+        <div style="width:50px;height:50px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:white;">G</span>
+        </div>
+        <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;line-height:1.35;color:var(--ink);">Gloria Patricia<br>Valencia Ormaza</div>
+      </div>
+
+      <div style="flex:1;background:white;padding:1.8rem 1rem;box-shadow:0 4px 20px rgba(0,0,0,.06);border-top:4px solid var(--rust);display:flex;flex-direction:column;align-items:center;text-align:center;gap:.8rem;">
+        <div style="width:50px;height:50px;border-radius:50%;background:var(--rust);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:white;">L</span>
+        </div>
+        <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;line-height:1.35;color:var(--ink);">Luz Elena<br>Hinestroza Román</div>
+      </div>
+
+      <div style="flex:1;background:white;padding:1.8rem 1rem;box-shadow:0 4px 20px rgba(0,0,0,.06);border-top:4px solid var(--lavender);display:flex;flex-direction:column;align-items:center;text-align:center;gap:.8rem;">
+        <div style="width:50px;height:50px;border-radius:50%;background:var(--lavender);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:white;">A</span>
+        </div>
+        <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;line-height:1.35;color:var(--ink);">Alejandro<br>Zapata Palacio</div>
+      </div>
+
+      <div style="flex:1;background:white;padding:1.8rem 1rem;box-shadow:0 4px 20px rgba(0,0,0,.06);border-top:4px solid var(--slate);display:flex;flex-direction:column;align-items:center;text-align:center;gap:.8rem;">
+        <div style="width:50px;height:50px;border-radius:50%;background:var(--slate);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:white;">L</span>
+        </div>
+        <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;line-height:1.35;color:var(--ink);">Lina Katerine<br>Quintero Rodríguez</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft">Conductismo</div>
+  <p style="margin-top:.8rem;font-size:.72rem;opacity:.3">Thorndike · Pavlov · Béjterev · Watson · Skinner · Guthrie · Tolman · Hull · Spence · Neal Miller · Bandura</p>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pb').style.width=pct+'%';
+});
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.tl-item,.avc,.concl-card').forEach((el,i)=>{
+  if(el.classList.contains('tl-item'))el.style.transitionDelay=(i*.08)+'s';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
